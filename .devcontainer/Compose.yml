@@ -1,0 +1,16 @@
+name: terraform-vault-module
+services:
+  dev:
+    image: "localhost/terraform-vault-module:latest"
+    build:
+      dockerfile: Containerfile
+    command: ["-c", "while sleep 1000; do :; done"]
+    userns_mode: "keep-id"
+    volumes:
+      - ..:/workspace:cached
+
+  vault:
+    image: "hashicorp/vault:1.21.4"
+    command: ["server", "-dev", "-dev-root-token-id=root"]
+    ports:
+      - "8201:8200"

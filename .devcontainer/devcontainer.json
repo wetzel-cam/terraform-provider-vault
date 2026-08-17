@@ -1,0 +1,15 @@
+{
+  "name": "terraform-vault-module",
+  "dockerComposeFile": "Compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "opentofu.vscode-opentofu",
+        "golang.Go"
+      ]
+    }
+  }
+}

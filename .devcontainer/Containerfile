@@ -1,0 +1,29 @@
+FROM registry1.dso.mil/ironbank/redhat/ubi/ubi10:10.2
+
+WORKDIR /tmp
+
+# Base tools
+RUN dnf install -y git jq make
+
+# Install OpenTofu
+RUN curl --proto '=https' --tlsv1.2 -fsSL https://get.opentofu.org/install-opentofu.sh -o install-opentofu.sh && \
+bash install-opentofu.sh --install-method rpm && \
+rm -f install-opentofu
+
+# Install GO
+RUN curl -sL https://go.dev/dl/go1.26.6.linux-amd64.tar.gz | tar -zxC /usr/local/bin/
+
+ARG USERNAME=devuser
+ARG USER_UID=1000
+ARG USER_GID=${USER_UID}
+RUN groupadd --gid ${USER_GID} ${USERNAME} && \
+useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME}
+USER ${USERNAME}
+WORKDIR /home/${USERNAME}
+
+COPY <<'EOF' .bashrc
+export PATH="$PATH:/usr/local/bin/go/bin"
+export PATH="$PATH:$(go env GOPATH)/bin"
+EOF
+
+ENTRYPOINT [ "/bin/bash" ]

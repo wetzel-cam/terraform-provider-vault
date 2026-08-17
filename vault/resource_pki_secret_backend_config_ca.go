@@ -39,6 +39,8 @@ func pkiSecretBackendConfigCAResource() *schema.Resource {
 	}
 }
 
+// I want this to export all key/cert pairs as an issuer object to be consumed
+// Needs to actually read and parse the return data in list of returned objects
 func pkiSecretBackendConfigCACreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client, e := provider.GetClient(d, meta)
 	if e != nil {
